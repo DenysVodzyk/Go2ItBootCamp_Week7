@@ -9,9 +9,8 @@ public class Task7_1c {
         try {
             if (i % 2 == 0) {
                 throw new RuntimeException("This is the test exception");
-            } else {
-                //normal execution
             }
+            //normal execution
         } catch (RuntimeException e) {
             //handleRTE
             System.out.println("Woohoo!I've caught RuntimeException");
