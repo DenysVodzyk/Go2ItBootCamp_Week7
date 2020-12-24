@@ -1,11 +1,11 @@
 package Task7_3_Week4Atm;
 
-public class SoftwawreUpdateException extends Exception{
-    public SoftwawreUpdateException(String message){
+public class SoftwareUpdateException extends Exception {
+    public SoftwareUpdateException(String message) {
         super(message);
     }
 
-    public SoftwawreUpdateException(String message, Throwable cause){
+    public SoftwareUpdateException(String message, Throwable cause) {
         super(message, cause);
     }
 }
