@@ -1,8 +1,8 @@
 package Task7_3_Week4Atm;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException, ATM.MoneyNotAvailableException {
-        BankCard validationCard = new BankCard(1111, "123456", 0);
+    public static void main(String[] args) throws InterruptedException {
+        BankCard authenticCard = new BankCard(1111, "123456", 0);
         BankCard bankCard1 = new BankCard(1111, "123456", 20000);
         BankCard bankCard2 = new BankCard(2222, "987654", 0);
 
@@ -15,17 +15,29 @@ public class Main {
 
 
         //validate bank card 1;
-        if (atm1.validateBankCard(bankCard1, validationCard)) {
+        if (atm1.validateBankCard(bankCard1, authenticCard)) {
 
             atm1.displayCardBalance(bankCard1);
-            atm1.withdrawFunds(100, bankCard1);
+            try {
+                atm1.withdrawFunds(100, bankCard1);
+            } catch (FundsWithdrawalException e) {
+                e.printStackTrace();
+            }
 
-            //check for
+            //check FundsWithdrawalException
             atm1.displayCardBalance(bankCard1);
-            atm1.withdrawFunds(20000, bankCard1);
+            try {
+                atm1.withdrawFunds(20000, bankCard1);
+            } catch (FundsWithdrawalException e) {
+                e.printStackTrace();
+            }
 
             atm1.displayCardBalance(bankCard1);
-            atm1.withdrawFunds(100, bankCard1);
+            try {
+                atm1.withdrawFunds(100, bankCard1);
+            } catch (FundsWithdrawalException e) {
+                e.printStackTrace();
+            }
             atm1.displayATMBalance();
 
             atm1.depositFundsByStaff(20000);
@@ -36,7 +48,11 @@ public class Main {
             atm1.displayCardBalance(bankCard1);
 
             atm1.displayCardBalance(bankCard2);
-            atm1.transferFunds(1000, bankCard1, bankCard2);
+            try {
+                atm1.transferFunds(1000, bankCard1, bankCard2);
+            } catch (FundsWithdrawalException e) {
+                e.printStackTrace();
+            }
             atm1.displayCardBalance(bankCard2);
 
             Software newSotware = new Software(121, "Alex");
@@ -45,7 +61,7 @@ public class Main {
             //check for OutdatedSoftwareUpdateException.
             try {
                 atm1.installSoftwareUpdate(newSotware);
-            } catch (OutdatedSoftwareException e) {
+            } catch (SoftwareUpdateException e) {
                 e.printStackTrace();
             }
             System.out.println(atm1);
