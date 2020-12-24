@@ -29,10 +29,10 @@ public class ATM {
         atm.add(atmLocation);
     }
 
-    public void withdrawFunds(int amountToWithdraw, BankCard bankCard) throws MoneyNotAvailableException {
-        if (balance >= amountToWithdraw) {
+    public void withdrawFunds(int amountToWithdraw, BankCard bankCard) throws FundsWithdrawalException {
+        if (getBalance() >= amountToWithdraw) {
             if (bankCard.getBalance() < amountToWithdraw) {
-                throw new MoneyNotAvailableException("Sorry you don't have enough money on the card.");
+                throw new FundsWithdrawalException("Sorry you don't have enough money on the card.");
             }
             balance -= amountToWithdraw;
             double leftoverOnCard = bankCard.getBalance() - amountToWithdraw;
@@ -54,13 +54,13 @@ public class ATM {
         balance += amountToDeposit;
     }
 
-    public static void installSoftwareUpdate(Software software) throws InterruptedException, OutdatedSoftwareException {
+    public static void installSoftwareUpdate(Software software) throws InterruptedException, SoftwareUpdateException {
         if (software.getVersion() > softwareVersion) {
             previousSoftwareVersion = softwareVersion;
             Thread.sleep(2000);
             softwareVersion = software.getVersion();
         } else {
-            throw new OutdatedSoftwareException("Software is outdated, you cannot instal it.");
+            throw new SoftwareUpdateException("Software is outdated, you cannot instal it.");
         }
     }
 
@@ -78,22 +78,18 @@ public class ATM {
         System.out.println("ATM balance is: " + balance);
     }
 
-    public boolean validateBankCard(BankCard customerCard, BankCard validationCard) {
-        if (customerCard.equals(validationCard)) {
-            return true;
-        }
-        return false;
+    public boolean validateBankCard(BankCard customerCard, BankCard authenticCard) {
+        return customerCard.equals(authenticCard);
     }
 
-    public void transferFunds(double amount, BankCard card1, BankCard card2) {
-        if (card1.getBalance() >= amount) {
-            double leftoverBalanceCard1 = card1.getBalance() - amount;
-            card1.setBalance(leftoverBalanceCard1);
-            card2.setBalance(card2.getBalance() + amount);
-            System.out.println("Transfer complete");
-        } else {
-            System.out.println("You don't have enough money on your card.");
+    public void transferFunds(double amount, BankCard card1, BankCard card2) throws FundsWithdrawalException {
+        if (card1.getBalance() < amount) {
+            throw new FundsWithdrawalException("Sorry you don't have enough money on the card.");
         }
+        double leftoverBalanceCard1 = card1.getBalance() - amount;
+        card1.setBalance(leftoverBalanceCard1);
+        card2.setBalance(card2.getBalance() + amount);
+        System.out.println("Transfer complete");
     }
 
     public String getBankName() {
@@ -124,11 +120,6 @@ public class ATM {
     public String toString() {
         return "Bank name: " + getBankName() + ". ATM Balance: " + getBalance() + ". ATM location: " + getAtmLocation() + ". ATM Software: " + getSoftwareVersion();
     }
-
-    public class MoneyNotAvailableException extends Exception {
-        public MoneyNotAvailableException(String errorMessage) {
-            super(errorMessage);
-        }
-    }
 }
+
 
